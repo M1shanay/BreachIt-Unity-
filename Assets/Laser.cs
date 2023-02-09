@@ -6,7 +6,9 @@ public class Laser : MonoBehaviour
 {
     private LineRenderer line;
     public Transform laserposition;
-
+    public GameObject hitprefab;
+    public float time = 0.05f;
+    private float timer;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,18 @@ public class Laser : MonoBehaviour
             if (hit.collider)
             {
                 line.SetPosition(1, hit.point);
+                if (Input.GetMouseButton(0))
+                {
+                    if (timer >= 0)
+                    {
+                        timer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        Instantiate(hitprefab, hit.point, Quaternion.LookRotation(Vector3.Reflect(transform.forward, hit.normal)/*laserposition.position - hit.point*/, Vector3.up));
+                        timer = time;
+                    }
+                }
             }
         }
         else

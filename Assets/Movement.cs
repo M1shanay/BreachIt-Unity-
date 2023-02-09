@@ -19,6 +19,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         _controller = GetComponent<CharacterController>();
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -51,6 +52,15 @@ public class Movement : MonoBehaviour
 
             animator.SetFloat("VelocityZ", velZ, 0.1f, Time.deltaTime);
             animator.SetFloat("VelocityX", velX, 0.1f, Time.deltaTime);
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                animator.SetFloat("Clin", -0.75f);
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                animator.SetFloat("Clin", 0.75f);
+            }
 
         }
         else
