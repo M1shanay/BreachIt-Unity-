@@ -6,7 +6,10 @@ public class Laser : MonoBehaviour
 {
     private LineRenderer line;
     public Transform laserposition;
-    public GameObject hitprefab;
+    public GameObject Breekhitprefab;
+    public GameObject Woodhitprefab;
+    public GameObject Metalhitprefab;
+    public GameObject Enemyhitprefab;
     public float time = 0.05f;
     private float timer;
     // Start is called before the first frame update
@@ -33,7 +36,22 @@ public class Laser : MonoBehaviour
                     }
                     else
                     {
-                        Instantiate(hitprefab, hit.point, Quaternion.LookRotation(Vector3.Reflect(transform.forward, hit.normal)/*laserposition.position - hit.point*/, Vector3.up));
+                        if (hit.collider.gameObject.tag == "BreekWall")
+                        {
+                            Instantiate(Breekhitprefab, hit.point, Quaternion.LookRotation(Vector3.Reflect(transform.forward, hit.normal)/*laserposition.position - hit.point*/, Vector3.up));
+                        }
+                        else if (hit.collider.gameObject.tag == "WoodWall")
+                        {
+                            Instantiate(Woodhitprefab, hit.point, Quaternion.LookRotation(Vector3.Reflect(transform.forward, hit.normal)/*laserposition.position - hit.point*/, Vector3.up));
+                        }
+                        else if (hit.collider.gameObject.tag == "Metal")
+                        {
+                            Instantiate(Metalhitprefab, hit.point, Quaternion.LookRotation(Vector3.Reflect(transform.forward, hit.normal)/*laserposition.position - hit.point*/, Vector3.up));
+                        }
+                        else if (hit.collider.gameObject.tag == "Enemy")
+                        {
+                            Instantiate(Enemyhitprefab, hit.point, Quaternion.LookRotation(Vector3.Reflect(transform.forward, hit.normal)/*laserposition.position - hit.point*/, Vector3.up));
+                        }
                         timer = time;
                     }
                 }

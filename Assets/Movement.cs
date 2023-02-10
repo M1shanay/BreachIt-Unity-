@@ -15,16 +15,21 @@ public class Movement : MonoBehaviour
     private float _jumpSpeed;
     private float _jumpVertical;
     private float _jumpHorizontal;
+
+
+
+    public Texture2D cursorTexture;
     // Start is called before the first frame update
     void Start()
     {
         _controller = GetComponent<CharacterController>();
-        Cursor.visible = false;
+        //Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
     }
 
     // Update is called once per frame
     void Update()
     {
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
         Move();
         Shoot();
         //Rotation();
