@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
     private CharacterController _controller;
     [SerializeField] private Animator animator;
     public GameObject FirePref;
-    private bool flag;
+    private int Clin = 0;
     //public Camera MainCamera;
     public float gravity;
     public float jumpForce;
@@ -58,13 +58,30 @@ public class Movement : MonoBehaviour
             animator.SetFloat("VelocityZ", velZ, 0.1f, Time.deltaTime);
             animator.SetFloat("VelocityX", velX, 0.1f, Time.deltaTime);
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Q))
             {
-                animator.SetFloat("Clin", -0.75f);
+                animator.SetFloat("Clin", -1f, 0.2f, Time.deltaTime);
+                Clin = 1;
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            else if (Clin==1)
             {
-                animator.SetFloat("Clin", 0.75f);
+                Debug.Log("ıÛÈ ÎÂÙÚ");
+                animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                Clin = -1;
+                animator.SetFloat("Clin", 1f, 0.2f, Time.deltaTime);
+            }
+            else if (Clin==-1)
+            {
+                Debug.Log("ıÛÈ ‡ÈÚ");
+                animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
+            }
+            if (animator.GetFloat("Clin") <= 0.001f && animator.GetFloat("Clin") >= -0.001f && Clin!=0)
+            {
+                Debug.Log("ıÛÈ");
+                Clin = 0;
             }
 
         }
@@ -86,13 +103,11 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            Debug.Log("Ù˚‚Ù‚");
             animator.SetFloat("Shoot", 1f, 0.05f, Time.deltaTime);
             FirePref.SetActive(true);
         }
         else //if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("neÙ˚‚Ù‚");
             FirePref.SetActive(false);
             animator.SetFloat("Shoot", 0, 0.05f, Time.deltaTime);
         }
@@ -106,7 +121,7 @@ public class Movement : MonoBehaviour
         { 			
             Vector3 targetPoint = ray.GetPoint(hitdist);  			
             Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);  			
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 7f*Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f*Time.deltaTime);
         } 	
     }
     }
