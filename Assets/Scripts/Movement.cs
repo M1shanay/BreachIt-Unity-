@@ -86,13 +86,13 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            Debug.Log("ôûâôâ");
+            //Debug.Log("ôûâôâ");
             animator.SetFloat("Shoot", 1f, 0.05f, Time.deltaTime);
             FirePref.SetActive(true);
         }
         else //if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("neôûâôâ");
+            //Debug.Log("neôûâôâ");
             FirePref.SetActive(false);
             animator.SetFloat("Shoot", 0, 0.05f, Time.deltaTime);
         }
