@@ -5,9 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Metal
   - BreekWall
   - WoodWall
-  - Metal
+  - Door
+  - Wallbang
   layers:
   - Default
   - TransparentFX
@@ -15,13 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-<<<<<<< Updated upstream
-  - Wallbang
   - Main
-=======
-  - 
-  - 
->>>>>>> Stashed changes
+  - Wallbang
   - 
   - 
   - 

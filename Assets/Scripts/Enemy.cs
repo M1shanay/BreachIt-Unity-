@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
 using System.Collections;
 using System.Collections.Generic;
-=======
->>>>>>> Stashed changes
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,11 +18,6 @@ public class Enemy : MonoBehaviour
     {
         if (_spottedEnemyArea.GetIsEnemySpotted)
         {
-<<<<<<< Updated upstream
-
-=======
-            
->>>>>>> Stashed changes
         }
     }
 
