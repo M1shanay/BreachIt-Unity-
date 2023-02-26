@@ -8,6 +8,7 @@ TagManager:
   - BreekWall
   - WoodWall
   - Metal
+  - Wall
   layers:
   - Default
   - TransparentFX
