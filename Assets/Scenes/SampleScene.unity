@@ -2682,11 +2682,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laserposition: {fileID: 363271168}
-  Breekhitprefab: {fileID: 100002, guid: 20b31fcfaed0cb842a56fbbe2419428f, type: 3}
-  Woodhitprefab: {fileID: 100002, guid: d39ab699aa314a147969fd483aa55205, type: 3}
-  Metalhitprefab: {fileID: 100002, guid: 00fedc70b62a31e448e8ccc298257b56, type: 3}
-  Enemyhitprefab: {fileID: 100002, guid: 7e06b88582254dd4b9ea98cf20f52d2f, type: 3}
-  time: 0.05
 --- !u!120 &363271167
 LineRenderer:
   serializedVersion: 2
@@ -7928,9 +7923,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1053210955}
   FirePref: {fileID: 467301805}
+  ShootPoint: {fileID: 363271168}
   gravity: -10
   jumpForce: 5
   speed: 2
+  Kicked: 0
   cursorTexture: {fileID: 2800000, guid: 2bbb9a1a905cbdc468c4b21ef114099b, type: 3}
 --- !u!95 &1053210955
 Animator:
