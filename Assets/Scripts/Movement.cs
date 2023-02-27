@@ -7,6 +7,7 @@ public class Movement : MonoBehaviour
     private CharacterController _controller;
     [SerializeField] private Animator animator;
     public GameObject FirePref;
+    public Transform ShootPoint;
     private int Clin = 0;
     //public Camera MainCamera;
     public float gravity;
@@ -15,9 +16,10 @@ public class Movement : MonoBehaviour
     private float _jumpSpeed;
     private float _jumpVertical;
     private float _jumpHorizontal;
+    public bool Kicked;
 
 
-
+    
     public Texture2D cursorTexture;
     // Start is called before the first frame update
     void Start()
@@ -30,8 +32,12 @@ public class Movement : MonoBehaviour
     void Update()
     {
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-        Move();
-        Shoot();
+        if (!Kicked)
+        {
+            Move();
+        }
+        CloseToWallAnimation();
+        ShootAnimation();
         //Rotation();
         LookOnCursor();
     }
@@ -99,7 +105,12 @@ public class Movement : MonoBehaviour
         Vector3 jdirection = new Vector3(_jumpHorizontal * speed * Time.deltaTime, _jumpSpeed * Time.deltaTime, _jumpVertical * speed * Time.deltaTime);
         _controller.Move(jdirection);
     }
-    void Shoot()
+    void Kick()
+    {
+
+        animator.SetFloat("Kick", 0, 0.2f, Time.deltaTime);
+    }
+    void ShootAnimation()
     {
         if (Input.GetMouseButton(0))
         {
@@ -110,6 +121,35 @@ public class Movement : MonoBehaviour
         {
             FirePref.SetActive(false);
             animator.SetFloat("Shoot", 0, 0.05f, Time.deltaTime);
+        }
+    }
+    void CloseToWallAnimation()
+    {
+        Ray ray = new Ray(ShootPoint.position, ShootPoint.forward);
+        RaycastHit hit;
+        Debug.DrawRay(ShootPoint.position, ShootPoint.forward * 100f,Color.green);
+        if (Physics.Raycast(ShootPoint.position, ShootPoint.forward, out hit, 2f, ~(1<<6)))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Map")) 
+            {
+                //Debug.Log("פûגפû");
+                float distance = Vector3.Distance(hit.point, ShootPoint.position);
+                float value = 0.65f/distance;
+                if(value > 0.95)
+                {
+                    value = 1;
+                }
+                Debug.Log(distance);
+                animator.SetFloat("Dist", value, 0.05f, Time.deltaTime);
+            }
+        }
+        else if (animator.GetFloat("Dist") >= 0.01f)
+        {
+            animator.SetFloat("Dist", 0, 0.05f, Time.deltaTime);
+        }
+        else
+        {
+            animator.SetFloat("Dist", 0);
         }
     }
     void LookOnCursor()
