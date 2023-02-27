@@ -7231,7 +7231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1053210956}
-  offset: 5
+  offset: 10
 --- !u!1 &965322322
 GameObject:
   m_ObjectHideFlags: 0
