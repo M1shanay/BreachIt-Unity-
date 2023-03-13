@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AN_DoorScript : MonoBehaviour
 {
-    public GameObject Player;
+    private GameObject Player;
     private Animator pAnimation;
     public Transform KickPoint;
     [Space]
@@ -25,14 +25,18 @@ public class AN_DoorScript : MonoBehaviour
     public Rigidbody rbDoor;
     HingeJoint hinge;
     JointLimits hingeLim;
-    float currentLim;
+    float MaxLim=120f;
+    float MinLim=-120f;
 
     void Start()
     {
+        Player = GameObject.FindGameObjectWithTag("Player");
         Kicked = Player.GetComponent<Movement>().Kicked;
         pAnimation = Player.GetComponent<Animator>();
         rbDoor = GetComponent<Rigidbody>();
         hinge = GetComponent<HingeJoint>();
+        //MaxLim = hinge.limits.max;
+        //MinLim = hinge.limits.min;
     }
 
     void Update()
@@ -64,20 +68,20 @@ public class AN_DoorScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isOpened)
-        {
-            currentLim = 120f;
-        }
-        else
-        {
-            // currentLim = hinge.angle;
-            if (currentLim > 1f)
-                currentLim -= .5f * OpenSpeed;
-        }
-
-       
-        hingeLim.max = currentLim;
-        hingeLim.min = -currentLim;
+        //if (isOpened)
+        //{
+        //    currentLim = 120f;
+        //}
+        //else
+        //{
+        //    // currentLim = hinge.angle;
+        //    if (currentLim > 1f)
+        //        currentLim -= .5f * OpenSpeed;
+        //}
+        //
+        //
+        hingeLim.max = MaxLim;
+        hingeLim.min = MinLim;
         hinge.limits = hingeLim;
     }
     private IEnumerator DoorKick()

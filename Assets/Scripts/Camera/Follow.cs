@@ -15,6 +15,6 @@ public class Follow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(new Vector3(transform.position.x,transform.position.y, transform.position.z), new Vector3(target.position.x, transform.position.y, target.position.z-offset), 1f);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, target.position.z-offset), 1f);
     }
 }
