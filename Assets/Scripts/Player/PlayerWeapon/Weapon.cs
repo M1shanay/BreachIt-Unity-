@@ -12,8 +12,11 @@ public class Weapon : MonoBehaviour
 
     public static Action ImpactDeal;
 
+    public static bool CanFire = true;
+
     private float fireRate = 15f;
     private float nextTimeToFire = 0f;
+    private int _bullets = 30;
 
     private float penetrationDistans = 20f;
     // Start is called before the first frame update
@@ -27,12 +30,34 @@ public class Weapon : MonoBehaviour
     void Update()
     {
         LaserProjection();
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && CanFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot(transform.position, transform.forward);
+            _bullets--;
+            InGameUI.SendBullets(_bullets);
         }
+        if (_bullets <= 0)
+        {
+            CanFire = false;
+        }
+        StartReloading();
         //SecondHit();
+    }
+    void StartReloading()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            CanFire = false;
+            StartCoroutine(Reloading());
+        }
+    }
+    public IEnumerator Reloading()
+    {
+        yield return new WaitForSeconds(1f);
+        _bullets = 30;
+        InGameUI.SendBullets(_bullets);
+        CanFire = true;
     }
     void LaserProjection()
     {

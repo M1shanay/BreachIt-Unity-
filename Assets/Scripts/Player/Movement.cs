@@ -112,7 +112,7 @@ public class Movement : MonoBehaviour
     }
     void ShootAnimation()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Weapon.CanFire)
         {
             animator.SetFloat("Shoot", 1f, 0.05f, Time.deltaTime);
             FirePref.SetActive(true);

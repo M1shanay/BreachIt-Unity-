@@ -23,4 +23,8 @@ public class Button : MonoBehaviour, IPointerExitHandler,IPointerEnterHandler
     {
         GetComponentInChildren<TMP_Text>().color = Normal;
     }
+    public void SetDefaultColor()
+    {
+        GetComponentInChildren<TMP_Text>().color = Normal;
+    }
 }
