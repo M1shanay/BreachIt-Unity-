@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-    private CharacterController _controller;
     [SerializeField] private Animator animator;
+    [SerializeField] private FixedJoystick _movementJoystick;
+    [SerializeField] private FixedJoystick _rotationJoystick;
+    [SerializeField] private float _rotationSpeed;
+
+    private CharacterController _controller;
     public GameObject FirePref;
     public Transform ShootPoint;
     private int Clin = 0;
@@ -17,19 +22,21 @@ public class Movement : MonoBehaviour
     private float _jumpVertical;
     private float _jumpHorizontal;
     public bool Kicked;
-
-
-    
     public Texture2D cursorTexture;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
+    {
+        FirePref.SetActive(false);
+        animator.SetFloat("Shoot", 0, 0.05f, Time.deltaTime);
+    }
+
+    private void Start()
     {
         _controller = GetComponent<CharacterController>();
         //Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
         if (!Kicked)
@@ -37,18 +44,20 @@ public class Movement : MonoBehaviour
             Move();
         }
         CloseToWallAnimation();
-        ShootAnimation();
-        //Rotation();
-        LookOnCursor();
+        //ShootAnimation();
+        Rotation();
+        //LookOnCursor();
     }
+
     void Move()
     {
         float horizontal = 0;
         float vertical = 0;
         if (_controller.isGrounded)
         {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
+            horizontal = _movementJoystick.Horizontal;
+            vertical = _movementJoystick.Vertical;
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _jumpSpeed = jumpForce;
@@ -71,7 +80,7 @@ public class Movement : MonoBehaviour
             }
             else if (Clin==1)
             {
-                Debug.Log("υσι λετς");
+                //Debug.Log("υσι λετς");
                 animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
             }
             if (Input.GetKey(KeyCode.E))
@@ -81,12 +90,12 @@ public class Movement : MonoBehaviour
             }
             else if (Clin==-1)
             {
-                Debug.Log("υσι πΰις");
+                //Debug.Log("υσι πΰις");
                 animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
             }
             if (animator.GetFloat("Clin") <= 0.001f && animator.GetFloat("Clin") >= -0.001f && Clin!=0)
             {
-                Debug.Log("υσι");
+                //Debug.Log("υσι");
                 Clin = 0;
             }
 
@@ -99,30 +108,33 @@ public class Movement : MonoBehaviour
         Vector3 direction = new Vector3(horizontal * speed * Time.deltaTime, _jumpSpeed * Time.deltaTime, vertical * speed * Time.deltaTime);
         _controller.Move(direction);
     }
+
     void Jump()
     {
         _jumpSpeed += gravity * Time.deltaTime;
         Vector3 jdirection = new Vector3(_jumpHorizontal * speed * Time.deltaTime, _jumpSpeed * Time.deltaTime, _jumpVertical * speed * Time.deltaTime);
         _controller.Move(jdirection);
     }
-    void Kick()
-    {
 
+    public void Kick()
+    {
         animator.SetFloat("Kick", 0, 0.2f, Time.deltaTime);
     }
-    void ShootAnimation()
+
+    public void ShootAnimation(int setting)
     {
-        if (Input.GetMouseButton(0))
+        if (setting == 1)
         {
             animator.SetFloat("Shoot", 1f, 0.05f, Time.deltaTime);
             FirePref.SetActive(true);
         }
-        else //if (Input.GetMouseButtonUp(0))
+        else if (setting == 2)
         {
             FirePref.SetActive(false);
             animator.SetFloat("Shoot", 0, 0.05f, Time.deltaTime);
         }
     }
+
     void CloseToWallAnimation()
     {
         Ray ray = new Ray(ShootPoint.position, ShootPoint.forward);
@@ -152,7 +164,8 @@ public class Movement : MonoBehaviour
             animator.SetFloat("Dist", 0);
         }
     }
-    void LookOnCursor()
+
+    /*void LookOnCursor()
     {   
         Plane playerPlane = new Plane(Vector3.up, transform.position);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -163,5 +176,16 @@ public class Movement : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);  			
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f*Time.deltaTime);
         } 	
+    }*/
+
+    private void Rotation()
+    {
+        Vector3 rotation = new Vector3(_rotationJoystick.Horizontal, 0, _rotationJoystick.Vertical);
+
+        if(rotation != null)
+        {
+            Quaternion rotationQuaternion = Quaternion.LookRotation(rotation);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationQuaternion, _rotationSpeed * Time.fixedDeltaTime);
+        }
     }
-    }
+}

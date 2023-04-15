@@ -45,24 +45,10 @@ public class FieldOfView : MonoBehaviour
             if (Physics.Raycast(transform.position, raycastDirection, out RaycastHit raycastHit, _viewDistance, _layerMask))
             {
                 vertices[i + 1] = vertForward * raycastHit.distance;
-                /*if (raycastHit.transform.tag != "Enemy")
-                {
-                    vertices[i + 1] = vertForward * raycastHit.distance;
-                }
-                else
-                {
-                    _follow.SetCullingMask(1);
-                    _isSpottedEnemy = true;
-                }*/
             }
             else
             {
                 vertices[i + 1] = vertForward * viewDistance;
-
-                /*if(_isSpottedEnemy)
-                {
-                    _follow.SetCullingMask(0);
-                }*/
             }
             angle += angleIncrease;
         }
