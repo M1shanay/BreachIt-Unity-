@@ -25,7 +25,10 @@ TagManager:
   - NeonPlant
   - PP
   - Vision
-  - 
+  - Object
+  - Enemy
+  - FieldOfView
+  - LowObject
   - 
   - 
   - 
