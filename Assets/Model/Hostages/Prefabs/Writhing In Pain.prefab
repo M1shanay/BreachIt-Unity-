@@ -1372,7 +1372,7 @@ Transform:
   - {fileID: 8578787292373591451}
   - {fileID: 4946529222946911120}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5698901815218398017
 Animator:
@@ -1406,6 +1406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e3cf38617d6974c91b1fc277e2a52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Indicator: {fileID: 5442398055122215136}
+  timer: {fileID: 5699753371780083264}
 --- !u!1 &4895536659491976437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,14 +1561,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5129448148295901107}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.8549929, w: 0.5186396}
   m_LocalPosition: {x: 0, y: 0, z: -213.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4946529222946911120}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 117.518}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 7.1, y: -23.2}

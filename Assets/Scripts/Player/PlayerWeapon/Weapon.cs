@@ -5,13 +5,14 @@ using System;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] private float damage;
+
     private LineRenderer line;
     public Transform laserposition;
 
     private ImpactManager impactSpawner;
 
     public static Action ImpactDeal;
-
     public static bool CanFire = true;
 
     private float fireRate = 15f;
@@ -19,7 +20,7 @@ public class Weapon : MonoBehaviour
     private int _bullets = 30;
 
     private float penetrationDistans = 20f;
-    // Start is called before the first frame update
+
     void Start()
     {
         line = GetComponent<LineRenderer>();
@@ -160,14 +161,16 @@ public class Weapon : MonoBehaviour
     //    //    }
     //    //}
     //}
+
     void DamageManager(RaycastHit target)
     {
-        if (target.collider.tag == "Enemy")
+        if (target.collider.CompareTag("Enemy"))
         {
-            Enemy enemy = target.transform.GetComponent<Enemy>();
-            //enemy.TakeDamage(damage);
+            Soldier soldier = target.transform.GetComponent<Soldier>();
+            soldier.ApllyDamage(damage);
         }
     }
+
     //void ImpactManager(RaycastHit hit,int Revers)
     //{
     //    if (Input.GetMouseButton(0))
