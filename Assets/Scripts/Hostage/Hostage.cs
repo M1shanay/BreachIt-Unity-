@@ -29,21 +29,20 @@ public class Hostage : MonoBehaviour
 
     private void SaveHostage()
     {
-        Debug.Log("asdqweqwe");
-        InGameUI.SendHostageSave();
-        indicator.TimerFinish();
         Saved = true;
+        indicator.TimerFinish();
+        InGameUI.SendHostageSave();
+        StartCoroutine(indicator.DisableSaved());
     }
     private void StartSaveHostage()
     {
-        if (SaveDistance() < 7f)
+        if (SaveDistance() < 7f && !Saved)
         {
             if (SaveDistance() < 3f && _timeToSave >= 0)
             {
                 _timeToSave -= Time.deltaTime;
                 indicator.IndicatorChangeToEnd();
                 indicator.TimerStart((float)Math.Round(_timeToSave,3));
-                Debug.Log(_timeToSave);
             }
             else if (_timeToSave < 0)
             {
@@ -51,7 +50,6 @@ public class Hostage : MonoBehaviour
             }
             else
             {
-                Debug.Log("asd");
                 indicator.IndicatorChangeToStart();
                 indicator.TimerEnd();
                 _timeToSave = 10f;

@@ -9,6 +9,7 @@ public class UiHostageIndicator : MonoBehaviour
     public GameObject Indicator;
     public TMP_Text timer;
     private Color32 _cont = new Color32(255,255,255,0);
+    
 
 
     private byte a = 0;
@@ -27,6 +28,7 @@ public class UiHostageIndicator : MonoBehaviour
     }
     public void TimerFinish()
     {
+        StartFlash();
         timer.text = "Saved";
     }
     public void TimerEnd()
@@ -50,5 +52,15 @@ public class UiHostageIndicator : MonoBehaviour
         }
         _cont.a = a;
         Indicator.GetComponent<Image>().color = _cont;
+    }
+    public void StartFlash()
+    {
+        Indicator.GetComponent<Animator>().SetBool("Saving", true);
+    }
+    public IEnumerator DisableSaved()
+    {
+        yield return new WaitForSeconds(1.2f);
+        timer.GetComponent<Animator>().SetBool("Saved", true);
+        //timer.text = "";
     }
 }
