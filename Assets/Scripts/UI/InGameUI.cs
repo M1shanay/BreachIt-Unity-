@@ -9,6 +9,7 @@ public class InGameUI : MonoBehaviour
     public static UnityEvent OnHostageSave = new UnityEvent();
     public static UnityEvent<int> Bullets = new UnityEvent<int>();
     public static UnityEvent OnTakeDamage = new UnityEvent();
+
     public static void SendHostageSave()
     {
         OnHostageSave.Invoke();

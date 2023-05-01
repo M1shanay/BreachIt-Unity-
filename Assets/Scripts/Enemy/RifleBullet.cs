@@ -3,7 +3,7 @@ using UnityEngine;
 public class RifleBullet : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private int _damage = 10;
+    [SerializeField] private int _damage;
     [SerializeField] private float _startSpeed;
 
     private Rigidbody _rigidbody;

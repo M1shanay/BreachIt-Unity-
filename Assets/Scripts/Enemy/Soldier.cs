@@ -2,15 +2,18 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SoldierRifle : MonoBehaviour
+public class Soldier : MonoBehaviour
 {
     [SerializeField] private GameObject _target;
     [SerializeField] private GameObject _bullet;
+    [SerializeField] private float _fireRate;
+    [SerializeField] private LayerMask _layerMask;
     [SerializeField] private Vector3 _offset;
     [SerializeField] private Vector3 _bulletOffset;
     [SerializeField] private float _targetChasingOffset;
     [SerializeField] private float _spottedDistance;
     [SerializeField] private float _shootingDistance;
+    [SerializeField] private float _health;
 
     private NavMeshAgent _agent;
     private Ray _visionRay;
@@ -42,7 +45,7 @@ public class SoldierRifle : MonoBehaviour
             _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
             _distanceBetweenPlayer = Vector3.Distance(transform.position, _target.transform.position);
 
-            if (Physics.Raycast(_visionRay, out _raycastHit))
+            if (Physics.Raycast(_visionRay, out _raycastHit, _layerMask))
             {
                 if ((_raycastHit.transform.tag == "Player") && (_raycastHit.distance <= _spottedDistance))
                 {
@@ -103,9 +106,19 @@ public class SoldierRifle : MonoBehaviour
 
             Instantiate(_bullet, transform.position + _bulletOffset, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, 0.15f, 0f)));
 
-            yield return new WaitForSeconds(0.75f);
+            yield return new WaitForSeconds(_fireRate);
         }
 
         _isShooting = false;
+    }
+
+    public void ApllyDamage(float damage)
+    {
+        _health -= damage;
+
+        if (_health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

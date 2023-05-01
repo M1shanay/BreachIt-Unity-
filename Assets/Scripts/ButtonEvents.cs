@@ -9,12 +9,12 @@ public class ButtonEvents : MonoBehaviour
     //Стрельба------------------------
     public void OnFireButtonDown()
     {
-        _player.ShootAnimation(1);
+        _player.MobileShootAnimation(1);
     }
 
     public void OnFireButtonUp()
     {
-        _player.ShootAnimation(2);
+        _player.MobileShootAnimation(2);
     }
     //--------------------------------
 
