@@ -33,25 +33,33 @@ public class EnemyAnimation : MonoBehaviour
     {
         if(velocity == Vector3.zero)
         {
-            _animator.Play("HitReaction2");
+            _animator.Play("HitReaction1");
         }
         else
         {
-            _animator.Play("HitReaction1");
+            _animator.Play("HitReaction2");
         }
     }
     public void AnimateDeath()
     {
-        _animator.SetInteger("Death", Random.Range(1, 3));
+        _animator.SetInteger("Death", Random.Range(1, 4));
     }
     public void ShootingAnimation()
     {
-        _flickerFX.SetActive(true);
         _animator.SetFloat("Shoot", 1);
     }
     public void StopShootingAnimation()
     {
-        _flickerFX.SetActive(false);
         _animator.SetFloat("Shoot", -1);
+    }
+    public IEnumerator Flicker()
+    {
+        _flickerFX.SetActive(true);
+        yield return new WaitForSeconds(0.12f);
+        _flickerFX.SetActive(false);
+    }
+    public void DisableFlicker()
+    {
+        _flickerFX.SetActive(false);
     }
 }
