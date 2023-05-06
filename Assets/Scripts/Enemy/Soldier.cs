@@ -10,10 +10,12 @@ public class Soldier : MonoBehaviour
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private Vector3 _offset;
     [SerializeField] private Vector3 _bulletOffset;
+    [SerializeField] private Transform _shotPoint;
     [SerializeField] private float _targetChasingOffset;
     [SerializeField] private float _spottedDistance;
     [SerializeField] private float _shootingDistance;
     [SerializeField] private float _health;
+    [SerializeField] private EnemyAnimation _animation;
 
     private NavMeshAgent _agent;
     private Ray _visionRay;
@@ -25,22 +27,25 @@ public class Soldier : MonoBehaviour
     private bool _isShooting = false;
     private float _distanceBetweenPlayer;
     private float _stoppingDistance;
+    private bool _dead = false;
+    private BoxCollider _colider;
 
     private void Start()
     {
+        _colider = GetComponent<BoxCollider>();
         _agent = GetComponent<NavMeshAgent>();
-        _stoppingDistance = _agent.stoppingDistance;
+        //_stoppingDistance = _agent.stoppingDistance;
         StartCoroutine(EnemyVision());
     }
 
     private void EnemySpotted()
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 2f, 00f));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 8f, 00f));
     }
 
     private IEnumerator EnemyVision()
     {
-        while (true)
+        while (!_dead)
         {
             _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
             _distanceBetweenPlayer = Vector3.Distance(transform.position, _target.transform.position);
@@ -53,10 +58,10 @@ public class Soldier : MonoBehaviour
                     _agent.stoppingDistance = _stoppingDistance;
                     _isEnemySpotted = true;
                 }
-                else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
+                /*else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
                 {
                     _agent.stoppingDistance = 0;
-                }
+                }*/
 
                 Debug.DrawRay(_visionRay.origin, _visionRay.direction * 1000f, Color.red);
 
@@ -93,8 +98,8 @@ public class Soldier : MonoBehaviour
     private IEnumerator Shoot()
     {
         _isShooting = true;
-
-        while (_distanceBetweenPlayer <= _shootingDistance)
+        //_animation.ShootingAnimation();
+        while (_distanceBetweenPlayer <= _shootingDistance && !_dead)
         {
             if (Physics.Raycast(_visionRay, out _raycastHit))
             {
@@ -103,22 +108,26 @@ public class Soldier : MonoBehaviour
                     break;
                 }
             }
-
-            Instantiate(_bullet, transform.position + _bulletOffset, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, 0.15f, 0f)));
-
+            Instantiate(_bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, 0.15f, 0f)));
+            //Instantiate(_bullet, _shotPoint.position, _shotPoint.rotation);
+            //StartCoroutine(_animation.Flicker());
             yield return new WaitForSeconds(_fireRate);
         }
 
         _isShooting = false;
+        //_animation.StopShootingAnimation();
     }
 
     public void ApllyDamage(float damage)
     {
         _health -= damage;
-
+        //_animation.HitReaction();
         if (_health <= 0)
         {
-            Destroy(gameObject);
+            _dead = true;
+            //_animation.AnimateDeath();
+            _colider.enabled = false;
+            //Destroy(gameObject);
         }
     }
 }

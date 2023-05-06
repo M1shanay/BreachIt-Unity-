@@ -169,6 +169,11 @@ public class Weapon : MonoBehaviour
             Soldier soldier = target.transform.GetComponent<Soldier>();
             soldier.ApllyDamage(damage);
         }
+        else if (target.collider.CompareTag("EnemyKnife"))
+        {
+            SoldierKnife soldierKnife = target.transform.GetComponent<SoldierKnife>();
+            soldierKnife.ApllyDamage(damage);
+        }
     }
 
     //void ImpactManager(RaycastHit hit,int Revers)
