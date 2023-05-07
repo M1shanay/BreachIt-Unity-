@@ -176,8 +176,8 @@ public class Weapon : MonoBehaviour
         }
         else if (target.collider.CompareTag("EnemyKnife"))
         {
-            SoldierKnife soldier = target.transform.GetComponent<SoldierKnife>();
-            soldier.ApllyDamage(damage);
+            SoldierKnife soldierKnife = target.transform.GetComponent<SoldierKnife>();
+            soldierKnife.ApllyDamage(damage);
         }
     }
 

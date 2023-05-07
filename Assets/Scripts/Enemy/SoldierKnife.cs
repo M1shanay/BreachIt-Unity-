@@ -20,6 +20,8 @@ public class SoldierKnife : MonoBehaviour
     private Ray _visionRay;
     private RaycastHit _raycastHit;
     private bool _isEnemySpotted = false;
+    private bool _dead = false;
+    private BoxCollider _colider;
 
     private void Start()
     {
@@ -30,7 +32,7 @@ public class SoldierKnife : MonoBehaviour
 
     private void EnemySpotted()
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 2f, 00f));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 10f, 00f));
     }
 
     private IEnumerator EnemyVision()
@@ -39,7 +41,7 @@ public class SoldierKnife : MonoBehaviour
         {
             _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
 
-            if (Physics.Raycast(_visionRay, out _raycastHit))
+            if (Physics.Raycast(_visionRay, out _raycastHit, _layerMask))
             {
                 if (_raycastHit.distance <= _spottedDistance)
                 {

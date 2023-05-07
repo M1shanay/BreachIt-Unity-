@@ -15,6 +15,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] private float _spottedDistance;
     [SerializeField] private float _shootingDistance;
     [SerializeField] private float _health;
+    [SerializeField] private EnemyAnimation _animation;
 
     [SerializeField] private EnemyAnimation _animation;
 
@@ -28,6 +29,8 @@ public class Soldier : MonoBehaviour
     private bool _isShooting = false;
     private float _distanceBetweenPlayer;
     private float _stoppingDistance;
+    private bool _dead = false;
+    private BoxCollider _colider;
 
     private bool _dead = false;
     private BoxCollider _colider;
@@ -36,13 +39,13 @@ public class Soldier : MonoBehaviour
     {
         _colider = GetComponent<BoxCollider>();
         _agent = GetComponent<NavMeshAgent>();
-        _stoppingDistance = _agent.stoppingDistance;
+        //_stoppingDistance = _agent.stoppingDistance;
         StartCoroutine(EnemyVision());
     }
 
     private void EnemySpotted()
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 2f, 00f));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 8f, 00f));
     }
 
     private IEnumerator EnemyVision()
@@ -60,10 +63,10 @@ public class Soldier : MonoBehaviour
                     _agent.stoppingDistance = _stoppingDistance;
                     _isEnemySpotted = true;
                 }
-                else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
+                /*else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
                 {
                     _agent.stoppingDistance = 0;
-                }
+                }*/
 
                 Debug.DrawRay(_visionRay.origin, _visionRay.direction * 1000f, Color.red);
 
@@ -101,6 +104,7 @@ public class Soldier : MonoBehaviour
     {
         _isShooting = true;
         _animation.ShootingAnimation();
+
         while (_distanceBetweenPlayer <= _shootingDistance && !_dead)
         {
             if (Physics.Raycast(_visionRay, out _raycastHit))
