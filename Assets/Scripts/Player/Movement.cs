@@ -11,6 +11,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private FixedJoystick _rotationJoystick;
     [SerializeField] private float _rotationSpeed;
 
+
+  
     private CharacterController _controller;
     public GameObject FirePref;
     public Transform ShootPoint;

@@ -44,6 +44,10 @@ public class ImpactManager : MonoBehaviour
         {
             Instantiate(Enemyhitprefab, hit.point, Quaternion.LookRotation((transform.position - hit.point) * Revers, Vector3.up));
         }
+        else if (hit.collider.gameObject.tag == "EnemyKnife")
+        {
+            Instantiate(Enemyhitprefab, hit.point, Quaternion.LookRotation((transform.position - hit.point) * Revers, Vector3.up));
+        }
         //        timer = time;
         //    }
         //}

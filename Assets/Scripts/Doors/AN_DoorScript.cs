@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AN_DoorScript : MonoBehaviour
 {
+    [SerializeField] private AudioSource _doorhit;
     private GameObject Player;
     private Animator pAnimation;
     public Transform KickPoint;
@@ -41,16 +42,16 @@ public class AN_DoorScript : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F) && NearView())
+        if(Input.GetKeyDown(KeyCode.F) && NearView() && !Kicked)
         {
             pAnimation.SetFloat("Kick", 1);
             StartCoroutine(DoorKick());
-            Kicked = true;
+            //Kicked = true;
         }
         else if (Kicked)
         {
             pAnimation.SetFloat("Kick", -1);
-            Kicked = false;
+            //Kicked = false;
         }
     }
 
@@ -86,12 +87,16 @@ public class AN_DoorScript : MonoBehaviour
     }
     private IEnumerator DoorKick()
     {
+        Kicked = true;
         pAnimation.SetFloat("VelocityZ", 0);
         pAnimation.SetFloat("VelocityX", 0);
         Player.GetComponent<Movement>().Kicked = true;
         yield return new WaitForSeconds(0.65f);
+        _doorhit.pitch = Random.Range(0.8f, 1.1f);
+        _doorhit.Play();
         rbDoor.AddForce(Player.transform.forward * 80000f);
         yield return new WaitForSeconds(0.65f);
         Player.GetComponent<Movement>().Kicked = false;
+        Kicked = false;
     }
 }

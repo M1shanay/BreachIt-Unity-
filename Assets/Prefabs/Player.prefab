@@ -64,7 +64,7 @@ Transform:
   - {fileID: 2617455883229308772}
   m_Father: {fileID: 4298566782422804018}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -81.98437, y: -136.26405, z: -106.20237}
+  m_LocalEulerAnglesHint: {x: -79.52632, y: -169.57114, z: -67.75166}
 --- !u!1 &901287702323253632
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 5596870826425651136}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -808,7 +808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30b7ff84770b5e4387384d66ff8bf02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 10
   laserposition: {fileID: 4336169070622356577}
 --- !u!114 &8914746517122005916
 MonoBehaviour:

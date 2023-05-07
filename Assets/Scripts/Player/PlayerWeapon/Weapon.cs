@@ -5,7 +5,10 @@ using System;
 
 public class Weapon : MonoBehaviour
 {
+
     [SerializeField] private float damage;
+    [SerializeField] private PlayerAudio _audio;
+    [SerializeField] private Animator _animator;
 
     private LineRenderer line;
     public Transform laserposition;
@@ -14,8 +17,9 @@ public class Weapon : MonoBehaviour
 
     public static Action ImpactDeal;
     public static bool CanFire = true;
+    public static bool _isReloading = false;
 
-    private float fireRate = 15f;
+    private float fireRate = 10f;
     private float nextTimeToFire = 0f;
     private int _bullets = 30;
 
@@ -35,6 +39,7 @@ public class Weapon : MonoBehaviour
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot(transform.position, transform.forward);
+            _audio.PlayShoot();
             _bullets--;
             InGameUI.SendBullets(_bullets);
         }
@@ -47,18 +52,22 @@ public class Weapon : MonoBehaviour
     }
     void StartReloading()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !_isReloading)
         {
             CanFire = false;
+            _isReloading = true;
+            _audio.PlayReload();
+            _animator.Play("Reloading");
             StartCoroutine(Reloading());
         }
     }
     public IEnumerator Reloading()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(4f);
         _bullets = 30;
         InGameUI.SendBullets(_bullets);
         CanFire = true;
+        _isReloading = false;
     }
     void LaserProjection()
     {
@@ -94,10 +103,6 @@ public class Weapon : MonoBehaviour
 
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wallbang"))
                 {
-                    //if(hit.collider.tag == "Door")
-                    //{
-                    //    hit.collider.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward*2000f);
-                    //}
 
                     if (Physics.Raycast(penetrationRay, out penetrationHit, 3f))
                     {
@@ -106,7 +111,7 @@ public class Weapon : MonoBehaviour
                         if (penetrationHit.collider)
                         {
                             impactSpawner.ImpactSpawn(penetrationHit, -1);
-                            DamageManager(hit);
+                            //DamageManager(hit);
 
                             Ray wallbang = new Ray(penetrationHit.point + ray.direction, ray.direction);
                             RaycastHit wallbangHit;
@@ -114,14 +119,14 @@ public class Weapon : MonoBehaviour
                            
                             float wallbangDist = penetrationDistans/Vector3.Distance(transform.position, penetrationHit.point);
 
-                            Debug.DrawRay(penetrationHit.point, ray.direction * wallbangDist, Color.green);
+                            Debug.DrawRay(penetrationHit.point, ray.direction * wallbangDist, Color.red);
                             if (Physics.Raycast(wallbang, out wallbangHit, wallbangDist))
                             {
-                                Debug.DrawLine(penetrationHit.point, wallbangHit.point, Color.green);
+                                Debug.DrawLine(penetrationHit.point, wallbangHit.point, Color.red);
                                 if (wallbangHit.collider)
                                 {
                                     impactSpawner.ImpactSpawn(wallbangHit, 1);
-                                    DamageManager(hit);
+                                    DamageManager(wallbangHit);
                                     //Shoot(wallbangHit.point, wallbang.direction);
                                 }
                             }
@@ -167,6 +172,11 @@ public class Weapon : MonoBehaviour
         if (target.collider.CompareTag("Enemy"))
         {
             Soldier soldier = target.transform.GetComponent<Soldier>();
+            soldier.ApllyDamage(damage);
+        }
+        else if (target.collider.CompareTag("EnemyKnife"))
+        {
+            SoldierKnife soldier = target.transform.GetComponent<SoldierKnife>();
             soldier.ApllyDamage(damage);
         }
     }
