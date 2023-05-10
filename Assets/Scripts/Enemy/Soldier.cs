@@ -16,8 +16,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] private float _shootingDistance;
     [SerializeField] private float _health;
     [SerializeField] private EnemyAnimation _animation;
-
-    [SerializeField] private EnemyAnimation _animation;
+    [SerializeField] private EnemyAudio _audio;
 
     private NavMeshAgent _agent;
     private Ray _visionRay;
@@ -32,20 +31,18 @@ public class Soldier : MonoBehaviour
     private bool _dead = false;
     private BoxCollider _colider;
 
-    private bool _dead = false;
-    private BoxCollider _colider;
 
     private void Start()
     {
         _colider = GetComponent<BoxCollider>();
         _agent = GetComponent<NavMeshAgent>();
-        //_stoppingDistance = _agent.stoppingDistance;
+        _stoppingDistance = _agent.stoppingDistance;
         StartCoroutine(EnemyVision());
     }
 
     private void EnemySpotted()
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 8f, 00f));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 4f, 00f));
     }
 
     private IEnumerator EnemyVision()
@@ -63,10 +60,10 @@ public class Soldier : MonoBehaviour
                     _agent.stoppingDistance = _stoppingDistance;
                     _isEnemySpotted = true;
                 }
-                /*else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
+                else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
                 {
                     _agent.stoppingDistance = 0;
-                }*/
+                }
 
                 Debug.DrawRay(_visionRay.origin, _visionRay.direction * 1000f, Color.red);
 
@@ -116,6 +113,7 @@ public class Soldier : MonoBehaviour
             }
             //Instantiate(_bullet, _shotPoint.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, 0.15f, 0f)));
             Instantiate(_bullet, _shotPoint.position, _shotPoint.rotation);
+            _audio.PlayShoot();
             StartCoroutine(_animation.Flicker());
             yield return new WaitForSeconds(_fireRate);
         }
@@ -130,8 +128,10 @@ public class Soldier : MonoBehaviour
         _animation.HitReaction();
         if (_health <= 0)
         {
+            InGameUI.SendEnemyKilled();
             _dead = true;
             _animation.AnimateDeath();
+            _agent.isStopped = true;
             _colider.enabled = false;
             //Destroy(gameObject);
         }
