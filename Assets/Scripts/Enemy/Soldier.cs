@@ -7,7 +7,6 @@ public class Soldier : MonoBehaviour
     [SerializeField] private GameObject _target;
     [SerializeField] private GameObject _bullet;
     [SerializeField] private float _fireRate;
-    [SerializeField] private LayerMask _layerMask;
     [SerializeField] private Vector3 _offset;
     [SerializeField] private Vector3 _bulletOffset;
     [SerializeField] private Transform _shotPoint;
@@ -34,7 +33,7 @@ public class Soldier : MonoBehaviour
     {
         _colider = GetComponent<BoxCollider>();
         _agent = GetComponent<NavMeshAgent>();
-        //_stoppingDistance = _agent.stoppingDistance;
+        _stoppingDistance = _agent.stoppingDistance;
         StartCoroutine(EnemyVision());
     }
 
@@ -50,7 +49,7 @@ public class Soldier : MonoBehaviour
             _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
             _distanceBetweenPlayer = Vector3.Distance(transform.position, _target.transform.position);
 
-            if (Physics.Raycast(_visionRay, out _raycastHit, _layerMask))
+            if (Physics.Raycast(_visionRay, out _raycastHit))
             {
                 if ((_raycastHit.transform.tag == "Player") && (_raycastHit.distance <= _spottedDistance))
                 {
@@ -58,10 +57,10 @@ public class Soldier : MonoBehaviour
                     _agent.stoppingDistance = _stoppingDistance;
                     _isEnemySpotted = true;
                 }
-                /*else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
+                else if ((_isEnemySpotted) && (_raycastHit.transform.tag != "Player"))
                 {
                     _agent.stoppingDistance = 0;
-                }*/
+                }
 
                 Debug.DrawRay(_visionRay.origin, _visionRay.direction * 1000f, Color.red);
 
@@ -80,7 +79,7 @@ public class Soldier : MonoBehaviour
                         }
                         else if (!_isShooting)
                         {
-                            _agent.SetDestination(_lastPlayerSpottedPosition + transform.forward * _targetChasingOffset);
+                            _agent.SetDestination(_lastPlayerSpottedPosition/* + transform.forward * _targetChasingOffset*/);
 
                             if (_raycastHit.transform.tag != "Player")
                             {

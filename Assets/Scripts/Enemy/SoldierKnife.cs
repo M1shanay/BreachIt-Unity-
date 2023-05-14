@@ -8,7 +8,6 @@ public class SoldierKnife : MonoBehaviour
     [SerializeField] private GameObject _target;
     [SerializeField] private Vector3 _offset;
     [SerializeField] private float _spottedDistance;
-    [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _health;
 
     private NavMeshAgent _agent;
@@ -36,9 +35,9 @@ public class SoldierKnife : MonoBehaviour
         {
             _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
 
-            if (Physics.Raycast(_visionRay, out _raycastHit, _layerMask))
+            if (Physics.Raycast(_visionRay, out _raycastHit))
             {
-                if (_raycastHit.distance <= _spottedDistance)
+                if ((_raycastHit.transform.tag == "Player") && (_raycastHit.distance <= _spottedDistance))
                 {
                     _isEnemySpotted = true;
                     EnemySpotted();
