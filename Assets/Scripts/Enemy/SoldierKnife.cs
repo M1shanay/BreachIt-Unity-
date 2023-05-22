@@ -3,27 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SoldierKnife : MonoBehaviour
+public class SoldierKnife : Soldier
 {
-    [SerializeField] private GameObject _target;
-    [SerializeField] private Vector3 _offset;
-    [SerializeField] private float _spottedDistance;
-    [SerializeField] private float _health;
-    [SerializeField] private float _fireRate;
-
-    [SerializeField] private EnemyAnimation _animation;
-    [SerializeField] private EnemyAudio _audio;
-    [SerializeField] private GameObject _weapon;
-
-    private bool _dead = false;
-    private BoxCollider _colider;
-    private bool _isShooting = false;
-
-    private NavMeshAgent _agent;
-    private Ray _visionRay;
-    private RaycastHit _raycastHit;
-    private bool _isEnemySpotted = false;
-
+    [SerializeField] GameObject _weapon;
     private void Start()
     {
         _colider = GetComponent<BoxCollider>();
@@ -31,12 +13,12 @@ public class SoldierKnife : MonoBehaviour
         StartCoroutine(EnemyVision());
     }
 
-    private void EnemySpotted()
+    protected override void EnemySpotted()
     {
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 10f, 00f));
     }
 
-    private IEnumerator EnemyVision()
+    protected override IEnumerator EnemyVision()
     {
         while (!_dead)
         {
@@ -64,7 +46,7 @@ public class SoldierKnife : MonoBehaviour
             yield return null;
         }
     }
-    private IEnumerator Shoot()
+    protected override IEnumerator Shoot()
     {
         _isShooting = true;
         _animation.ShootingAnimation();
@@ -84,9 +66,10 @@ public class SoldierKnife : MonoBehaviour
         _animation.StopShootingAnimation();
     }
 
-    public void ApllyDamage(float damage)
+    public override void ApllyDamage(float damage)
     {
         _health -= damage;
+        _indicator.TakeDamage();
         _animation.HitReaction();
         _audio.PlayHit();
         if (_health <= 0)
@@ -94,6 +77,7 @@ public class SoldierKnife : MonoBehaviour
             _agent.isStopped = true;
             InGameUI.SendEnemyKilled();
             _dead = true;
+            _indicator.IndicatorDisable();
             _animation.AnimateDeath();
             _audio.PlayDead();
             _colider.enabled = false;

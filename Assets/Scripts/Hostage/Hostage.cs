@@ -6,7 +6,7 @@ using TMPro;
 
 public class Hostage : MonoBehaviour
 {
-    private UiHostageIndicator indicator = new UiHostageIndicator();
+    [SerializeField] private UiHostageIndicator indicator;
     public GameObject Indicator;
     public TMP_Text timer;
     private GameObject Player;
@@ -42,7 +42,7 @@ public class Hostage : MonoBehaviour
             {
                 _timeToSave -= Time.deltaTime;
                 indicator.IndicatorChangeToEnd();
-                indicator.TimerStart((float)Math.Round(_timeToSave,3));
+                indicator.TimerStart((float)Math.Round(_timeToSave,1));
             }
             else if (_timeToSave < 0)
             {

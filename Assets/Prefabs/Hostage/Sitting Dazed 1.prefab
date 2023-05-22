@@ -1644,6 +1644,7 @@ GameObject:
   - component: {fileID: 5042925901040005032}
   - component: {fileID: 8282515901581180710}
   - component: {fileID: 6199526870847902276}
+  - component: {fileID: 2282719912395428937}
   m_Layer: 0
   m_Name: Sitting Dazed 1
   m_TagString: Untagged
@@ -1703,8 +1704,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e3cf38617d6974c91b1fc277e2a52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indicator: {fileID: 2282719912395428937}
   Indicator: {fileID: 1091225302511167302}
   timer: {fileID: 7390638300249714520}
+--- !u!114 &2282719912395428937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4048055049688285996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b362f26d48a2741bcd00f209d07ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Indicator: {fileID: 0}
+  timer: {fileID: 0}
 --- !u!1 &4168437800169959755
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class UiText : MonoBehaviour
         InGameUI.OnHostageSave.AddListener(HostageSave);
         InGameUI.Bullets.AddListener(BulletShot);
         InGameUI.OnTakeDamage.AddListener(GetPain);
+        InGameUI.OnTakeMedicine.AddListener(GetHeal);
     }
 
     private void EnemyKilled()
@@ -46,6 +47,12 @@ public class UiText : MonoBehaviour
     {
         _pain += 63;
         _painColor = new Color32(255,255,255,_pain);
+        PainHUD.GetComponent<SpriteRenderer>().color = _painColor;
+    }
+    private void GetHeal()
+    {
+        _pain = 0;
+        _painColor = new Color32(255, 255, 255, _pain);
         PainHUD.GetComponent<SpriteRenderer>().color = _painColor;
     }
 }

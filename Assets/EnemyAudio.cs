@@ -28,8 +28,8 @@ public class EnemyAudio : MonoBehaviour
 
     Vector3 GetVelocity()
     {
-        velocity = (transform.position - current) / Time.deltaTime;
-        current = transform.position;
+        velocity = (_enemy.transform.position - current) / Time.deltaTime;
+        current = _enemy.transform.position;
         return velocity;
     }
     IEnumerator PlaySteps()

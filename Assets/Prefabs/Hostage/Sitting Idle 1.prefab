@@ -1048,7 +1048,7 @@ Transform:
   - {fileID: 1316876815881569340}
   - {fileID: 1612876421470872046}
   - {fileID: 5065330559079407975}
-  - {fileID: 849193632286749499}
+  - {fileID: 6686373876471896106}
   m_Father: {fileID: 995983146980276317}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -17.907389, y: -179.45422, z: -0.3540881}
@@ -1287,6 +1287,7 @@ GameObject:
   - component: {fileID: 1535181835592474985}
   - component: {fileID: 1145605010096671082}
   - component: {fileID: 3172914944362270580}
+  - component: {fileID: 7283886316562440002}
   m_Layer: 0
   m_Name: Sitting Idle 1
   m_TagString: Untagged
@@ -1346,8 +1347,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e3cf38617d6974c91b1fc277e2a52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indicator: {fileID: 7283886316562440002}
   Indicator: {fileID: 9163899342242943283}
   timer: {fileID: 4177882752279577615}
+--- !u!114 &7283886316562440002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3171260918670483717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b362f26d48a2741bcd00f209d07ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Indicator: {fileID: 0}
+  timer: {fileID: 0}
 --- !u!1 &3258021456896402531
 GameObject:
   m_ObjectHideFlags: 0
@@ -3273,7 +3289,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 435f35162eedaab4ba29d8d3d2ddef9a, type: 3}
---- !u!4 &849193632286749499 stripped
+--- !u!4 &6686373876471896106 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 435f35162eedaab4ba29d8d3d2ddef9a, type: 3}
   m_PrefabInstance: {fileID: 6575392758015623105}

@@ -887,7 +887,7 @@ Transform:
   - {fileID: 4878983543473430255}
   - {fileID: 8751029268310712285}
   - {fileID: 7810425328333244106}
-  - {fileID: 2989613602332133168}
+  - {fileID: 5388432370752094683}
   m_Father: {fileID: 750466723232799581}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2015,6 +2015,7 @@ GameObject:
   - component: {fileID: 669657605575334399}
   - component: {fileID: 8646733020774363574}
   - component: {fileID: 2363404923526593086}
+  - component: {fileID: 7005551418460177049}
   m_Layer: 0
   m_Name: Writhing In Pain 1
   m_TagString: Untagged
@@ -2074,8 +2075,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e3cf38617d6974c91b1fc277e2a52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indicator: {fileID: 7005551418460177049}
   Indicator: {fileID: 2504706483767520913}
   timer: {fileID: 235441140839925633}
+--- !u!114 &7005551418460177049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5523644147805717321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b362f26d48a2741bcd00f209d07ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Indicator: {fileID: 0}
+  timer: {fileID: 0}
 --- !u!1 &5717451268963326060
 GameObject:
   m_ObjectHideFlags: 0
@@ -3273,7 +3289,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 435f35162eedaab4ba29d8d3d2ddef9a, type: 3}
---- !u!4 &2989613602332133168 stripped
+--- !u!4 &5388432370752094683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 435f35162eedaab4ba29d8d3d2ddef9a, type: 3}
   m_PrefabInstance: {fileID: 5570169664855107120}

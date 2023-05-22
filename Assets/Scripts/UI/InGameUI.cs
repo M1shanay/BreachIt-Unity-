@@ -9,6 +9,7 @@ public class InGameUI : MonoBehaviour
     public static UnityEvent OnHostageSave = new UnityEvent();
     public static UnityEvent<int> Bullets = new UnityEvent<int>();
     public static UnityEvent OnTakeDamage = new UnityEvent();
+    public static UnityEvent OnTakeMedicine = new UnityEvent();
 
     public static void SendHostageSave()
     {
@@ -25,6 +26,10 @@ public class InGameUI : MonoBehaviour
     public static void SendDamage()
     {
         OnTakeDamage.Invoke();
+    }
+    public static void SendHeal()
+    {
+        OnTakeMedicine.Invoke();
     }
 
 }

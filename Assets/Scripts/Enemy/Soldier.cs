@@ -4,32 +4,34 @@ using UnityEngine.AI;
 
 public class Soldier : MonoBehaviour
 {
-    [SerializeField] private GameObject _target;
+    [SerializeField] protected GameObject _target;
     [SerializeField] private GameObject _bullet;
-    [SerializeField] private float _fireRate;
-    [SerializeField] private LayerMask _layerMask;
-    [SerializeField] private Vector3 _offset;
-    [SerializeField] private Vector3 _bulletOffset;
+    [SerializeField] protected float _fireRate;
+    [SerializeField] protected LayerMask _layerMask;
+    [SerializeField] protected Vector3 _offset;
+    [SerializeField] protected Vector3 _bulletOffset;
     [SerializeField] private Transform _shotPoint;
-    [SerializeField] private float _targetChasingOffset;
-    [SerializeField] private float _spottedDistance;
-    [SerializeField] private float _shootingDistance;
-    [SerializeField] private float _health;
-    [SerializeField] private EnemyAnimation _animation;
-    [SerializeField] private EnemyAudio _audio;
+    [SerializeField] protected float _targetChasingOffset;
+    [SerializeField] protected float _spottedDistance;
+    [SerializeField] protected float _shootingDistance;
+    [SerializeField] protected float _health;
+    [SerializeField] protected EnemyAnimation _animation;
+    [SerializeField] protected EnemyAudio _audio;
 
-    private NavMeshAgent _agent;
-    private Ray _visionRay;
-    private Ray _shootRay;
-    private RaycastHit _raycastHit;
-    private RaycastHit _shootRayHit;
-    private Vector3 _lastPlayerSpottedPosition;
-    private bool _isEnemySpotted = false;
-    private bool _isShooting = false;
-    private float _distanceBetweenPlayer;
-    private float _stoppingDistance;
-    private bool _dead = false;
-    private BoxCollider _colider;
+    [SerializeField] protected EnemyIndicator _indicator;
+    protected NavMeshAgent _agent;
+    protected Ray _visionRay;
+    protected Ray _shootRay;
+    protected RaycastHit _raycastHit;
+    protected RaycastHit _shootRayHit;
+    protected Vector3 _lastPlayerSpottedPosition;
+    public bool _isEnemySpotted = false;
+    public bool _isChasing = false;
+    protected bool _isShooting = false;
+    protected float _distanceBetweenPlayer;
+    protected float _stoppingDistance;
+    protected bool _dead = false;
+    protected BoxCollider _colider;
 
 
     private void Start()
@@ -40,12 +42,16 @@ public class Soldier : MonoBehaviour
         StartCoroutine(EnemyVision());
     }
 
-    private void EnemySpotted()
+    public float CurrentHP
+    {
+        get { return _health; }
+    }
+    protected virtual void EnemySpotted()
     {
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 4f, 00f));
     }
 
-    private IEnumerator EnemyVision()
+    protected virtual IEnumerator EnemyVision()
     {
         while (!_dead)
         {
@@ -78,12 +84,13 @@ public class Soldier : MonoBehaviour
                     {
                         if ((_shootRayHit.transform.tag == "Player") && (_distanceBetweenPlayer <= _agent.stoppingDistance && !_isShooting))
                         {
+                            _isChasing = false;
                             StartCoroutine(Shoot());
                         }
                         else if (!_isShooting)
                         {
                             _agent.SetDestination(_lastPlayerSpottedPosition + transform.forward * _targetChasingOffset);
-
+                            _isChasing = true;
                             if (_raycastHit.transform.tag != "Player")
                             {
                                 _isEnemySpotted = false;
@@ -97,7 +104,7 @@ public class Soldier : MonoBehaviour
         }
     }
 
-    private IEnumerator Shoot()
+    protected virtual IEnumerator Shoot()
     {
         _isShooting = true;
         _animation.ShootingAnimation();
@@ -122,13 +129,15 @@ public class Soldier : MonoBehaviour
         _animation.StopShootingAnimation();
     }
 
-    public void ApllyDamage(float damage)
+    public virtual void ApllyDamage(float damage)
     {
         _health -= damage;
+        _indicator.TakeDamage();
         _animation.HitReaction();
         if (_health <= 0)
         {
             InGameUI.SendEnemyKilled();
+            _indicator.IndicatorDisable();
             _dead = true;
             _animation.AnimateDeath();
             _agent.isStopped = true;
