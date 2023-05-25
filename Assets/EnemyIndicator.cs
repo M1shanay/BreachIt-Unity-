@@ -38,7 +38,7 @@ public class EnemyIndicator : MonoBehaviour
     }
     void DistanceOfView()
     {
-        if (Vector3.Distance(transform.position, _Player.transform.position) < 10f && (transform.GetComponent<Soldier>()._isEnemySpotted || transform.GetComponent<Soldier>()._isChasing))
+        if (Vector3.Distance(transform.position, _Player.transform.position) < 15f && (transform.GetComponent<Soldier>()._isEnemySpotted || transform.GetComponent<Soldier>()._isChasing))
         {
             _inRange = true;
             _animator.Play("AlphaOn");

@@ -10,7 +10,7 @@ public class Knife : MonoBehaviour
 
     private void Awake()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        _player = GameObject.Find("Player");
     }
 
     private void Damage()

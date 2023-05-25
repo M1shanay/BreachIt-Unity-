@@ -38,8 +38,6 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-        //Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-
         if(!_isMobile)
         {
             StartCoroutine("PCMovement");

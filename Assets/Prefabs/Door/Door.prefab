@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _doorhit: {fileID: 3870361171259841956}
+  Player: {fileID: 3525266387929578632, guid: 33bc928571ca7fa4da6d9ca909dc89c1, type: 3}
   KickPoint: {fileID: 8495812084461239433}
   isOpened: 1
   OpenSpeed: 0

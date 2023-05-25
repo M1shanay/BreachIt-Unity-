@@ -244,3 +244,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 25
   _startSpeed: 100
+  _player: {fileID: 3525266387929578632, guid: 33bc928571ca7fa4da6d9ca909dc89c1, type: 3}

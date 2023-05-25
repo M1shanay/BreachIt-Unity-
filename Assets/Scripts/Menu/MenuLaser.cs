@@ -16,7 +16,8 @@ public class MenuLaser : MonoBehaviour
         impactSpawner = GetComponent<ImpactManager>();
         line = GetComponent<LineRenderer>();
         Cursor.visible = false;
-        //Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame

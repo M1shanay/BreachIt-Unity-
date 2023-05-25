@@ -9,13 +9,12 @@ public class Hostage : MonoBehaviour
     [SerializeField] private UiHostageIndicator indicator;
     public GameObject Indicator;
     public TMP_Text timer;
-    private GameObject Player;
+    [SerializeField] private GameObject Player;
     bool Saved = false;
     float distance;
-    float _timeToSave = 10f;
+    float _timeToSave = 5f;
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
         indicator.timer = timer;
         indicator.Indicator = Indicator;
     }
@@ -52,7 +51,7 @@ public class Hostage : MonoBehaviour
             {
                 indicator.IndicatorChangeToStart();
                 indicator.TimerEnd();
-                _timeToSave = 10f;
+                _timeToSave = 5f;
             }
         }
     }

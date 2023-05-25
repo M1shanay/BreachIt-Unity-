@@ -9,7 +9,10 @@ public class Player : MonoBehaviour
     [SerializeField] private int _health;
     [SerializeField] private int _maxHealth;
     [SerializeField] private Animator animator;
-
+    private void Start()
+    {
+        _health = _maxHealth;
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.G))
@@ -22,6 +25,7 @@ public class Player : MonoBehaviour
     {
         _health -= damage;
         animator.Play("HitReaction1");
+        Debug.Log(_health);
         InGameUI.SendDamage();
         if (_health <= 0)
         {

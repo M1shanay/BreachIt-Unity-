@@ -10,7 +10,7 @@ public class RifleBullet : MonoBehaviour
 
     private void Awake()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        _player = GameObject.Find("Player");
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.velocity = transform.TransformDirection(Vector3.forward * _startSpeed);
     }
@@ -25,6 +25,10 @@ public class RifleBullet : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Damage();
+            Destroy(gameObject);
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }

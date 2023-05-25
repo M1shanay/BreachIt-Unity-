@@ -11,13 +11,13 @@ public class Medicine : MonoBehaviour
     [SerializeField] MedicineIndicator indicator;
     public GameObject Indicator;
     public TMP_Text timer;
-    private GameObject Player;
+    [SerializeField] private GameObject Player;
     bool Healed = false;
     float distance;
     float _timeToHeal = 4f;
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        Player = GameObject.Find("Player");
         indicator.timer = timer;
         indicator.Indicator = Indicator;
         indicator.IndicatorChangeToStart();

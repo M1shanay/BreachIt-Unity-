@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UiText : MonoBehaviour
 {
@@ -16,8 +17,12 @@ public class UiText : MonoBehaviour
     private Color32 _painColor;
     private byte _pain = 0;
 
-    private void Start()
+    private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
     private void Awake()
     {
@@ -28,16 +33,24 @@ public class UiText : MonoBehaviour
         InGameUI.OnTakeMedicine.AddListener(GetHeal);
     }
 
+    private void CheckLevelOver()
+    {
+        if(RemainingHostages == 0 && RemainingKills == 0)
+        {
+            SceneManager.LoadScene("Menu");
+        }
+    }
     private void EnemyKilled()
     {
         RemainingKills--;
         KillsText.text = RemainingKills.ToString();
+        CheckLevelOver();
     }
     private void HostageSave()
     {
-        Debug.Log("UI");
         RemainingHostages--;
         HostagesText.text = RemainingHostages + "";
+        CheckLevelOver();
     }
     private void BulletShot(int bullets)
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AN_DoorScript : MonoBehaviour
 {
     [SerializeField] private AudioSource _doorhit;
-    private GameObject Player;
+    [SerializeField] private GameObject Player;
     private Animator pAnimation;
     public Transform KickPoint;
     [Space]
@@ -31,7 +31,6 @@ public class AN_DoorScript : MonoBehaviour
 
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
         Kicked = Player.GetComponent<Movement>().Kicked;
         pAnimation = Player.GetComponent<Animator>();
         rbDoor = GetComponent<Rigidbody>();
@@ -62,7 +61,6 @@ public class AN_DoorScript : MonoBehaviour
         //angleView = Vector3.Angle(Player.transform.forward, direction);
         direction = KickPoint.position - Player.transform.position;
         angleView = Vector3.Angle(direction, Player.transform.forward);
-        Debug.Log(angleView);
         if (distance < 2.5f && angleView < 30f) return true;
         else return false;
     }

@@ -1350,6 +1350,7 @@ MonoBehaviour:
   indicator: {fileID: 7283886316562440002}
   Indicator: {fileID: 9163899342242943283}
   timer: {fileID: 4177882752279577615}
+  Player: {fileID: 3525266387929578632, guid: 33bc928571ca7fa4da6d9ca909dc89c1, type: 3}
 --- !u!114 &7283886316562440002
 MonoBehaviour:
   m_ObjectHideFlags: 0
