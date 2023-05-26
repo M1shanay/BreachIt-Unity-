@@ -12,6 +12,7 @@ TagManager:
   - Wallbang
   - Wall
   - EnemyKnife
+  - PlayerHead
   layers:
   - Default
   - TransparentFX

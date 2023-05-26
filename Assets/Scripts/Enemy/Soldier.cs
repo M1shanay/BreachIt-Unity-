@@ -15,6 +15,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] private float _shootingDistance;
     [SerializeField] private float _health;
     [SerializeField] private EnemyAnimation _animation;
+    [SerializeField] private LayerMask _layerMask;
 
     private NavMeshAgent _agent;
     private Ray _visionRay;
@@ -49,8 +50,10 @@ public class Soldier : MonoBehaviour
             _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
             _distanceBetweenPlayer = Vector3.Distance(transform.position, _target.transform.position);
 
-            if (Physics.Raycast(_visionRay, out _raycastHit))
+            if (Physics.Raycast(_visionRay, out _raycastHit, 10000f, _layerMask))
             {
+                Debug.Log(_raycastHit.transform.tag);
+
                 if ((_raycastHit.transform.tag == "Player") && (_raycastHit.distance <= _spottedDistance))
                 {
                     _lastPlayerSpottedPosition = _target.transform.position;
