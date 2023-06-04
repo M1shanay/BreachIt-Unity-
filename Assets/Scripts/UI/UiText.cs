@@ -12,7 +12,8 @@ public class UiText : MonoBehaviour
     public TMP_Text KillsText;
     public TMP_Text HostagesText;
     public TMP_Text Bullets;
-    
+
+    public GameObject DeadScreen;
     public GameObject PainHUD;
     private Color32 _painColor;
     private byte _pain = 0;
@@ -31,8 +32,13 @@ public class UiText : MonoBehaviour
         InGameUI.Bullets.AddListener(BulletShot);
         InGameUI.OnTakeDamage.AddListener(GetPain);
         InGameUI.OnTakeMedicine.AddListener(GetHeal);
+        InGameUI.OnPlayerDead.AddListener(PlayerDead);
     }
 
+    private void PlayerDead()
+    {
+        DeadScreen.SetActive(true);
+    }
     private void CheckLevelOver()
     {
         if(RemainingHostages == 0 && RemainingKills == 0)

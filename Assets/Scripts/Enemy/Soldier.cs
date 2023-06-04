@@ -4,6 +4,7 @@ using UnityEngine.AI;
 
 public class Soldier : MonoBehaviour
 {
+    [SerializeField] protected GameObject _targetMove;
     [SerializeField] protected GameObject _target;
     [SerializeField] private GameObject _bullet;
     [SerializeField] protected float _fireRate;
@@ -11,6 +12,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] protected Vector3 _offset;
     [SerializeField] protected Vector3 _bulletOffset;
     [SerializeField] private Transform _shotPoint;
+    [SerializeField] private Transform _visionPoint;
     [SerializeField] protected float _targetChasingOffset;
     [SerializeField] protected float _spottedDistance;
     [SerializeField] protected float _shootingDistance;
@@ -48,21 +50,21 @@ public class Soldier : MonoBehaviour
     }
     protected virtual void EnemySpotted()
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _target.transform.position - transform.position, Time.deltaTime * 4f, 00f));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, _targetMove.transform.position - transform.position, Time.deltaTime * 4f, 00f));
     }
 
     protected virtual IEnumerator EnemyVision()
     {
         while (!_dead)
         {
-            _visionRay = new Ray(transform.position + _offset, _target.transform.position - transform.position);
+            _visionRay = new Ray(_visionPoint.transform.position/*transform.position + _offset*/, _target.transform.position - _visionPoint.transform.position /*transform.position*/);
             _distanceBetweenPlayer = Vector3.Distance(transform.position, _target.transform.position);
 
             if (Physics.Raycast(_visionRay, out _raycastHit, _layerMask))
             {
                 if ((_raycastHit.transform.tag == "Player") && (_raycastHit.distance <= _spottedDistance))
                 {
-                    _lastPlayerSpottedPosition = _target.transform.position;
+                    _lastPlayerSpottedPosition = _targetMove.transform.position;
                     _agent.stoppingDistance = _stoppingDistance;
                     _isEnemySpotted = true;
                 }
@@ -75,7 +77,7 @@ public class Soldier : MonoBehaviour
 
                 if (_isEnemySpotted)
                 {
-                    _shootRay = new Ray(transform.position + _offset, transform.forward);
+                    _shootRay = new Ray(_visionPoint.transform.position/*transform.position*//* + _offset*/, _target.transform.position - _visionPoint.transform.position);
                     Debug.DrawRay(_shootRay.origin, _shootRay.direction * 1000f, Color.white);
 
                     EnemySpotted();
@@ -89,6 +91,7 @@ public class Soldier : MonoBehaviour
                         }
                         else if (!_isShooting)
                         {
+                            Debug.Log("asdasd");
                             _agent.SetDestination(_lastPlayerSpottedPosition + transform.forward * _targetChasingOffset);
                             _isChasing = true;
                             if (_raycastHit.transform.tag != "Player")
@@ -107,8 +110,8 @@ public class Soldier : MonoBehaviour
     protected virtual IEnumerator Shoot()
     {
         _isShooting = true;
+        yield return new WaitForSeconds(0.5f);
         _animation.ShootingAnimation();
-
         while (_distanceBetweenPlayer <= _shootingDistance && !_dead)
         {
             if (Physics.Raycast(_visionRay, out _raycastHit))

@@ -9,8 +9,11 @@ public class Player : MonoBehaviour
     [SerializeField] private int _health;
     [SerializeField] private int _maxHealth;
     [SerializeField] private Animator animator;
+
+    public static bool _dead = false;
     private void Start()
     {
+        _dead = false;
         _health = _maxHealth;
     }
     private void Update()
@@ -30,8 +33,9 @@ public class Player : MonoBehaviour
         if (_health <= 0)
         {
             animator.Play("Death1");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //_loseCanvas.SetActive(true);
+            _dead = true;
+            InGameUI.SendPlayerDead();
+
         }
     }
     public bool IsFullHP()

@@ -27,6 +27,9 @@ public class Weapon : MonoBehaviour
 
     void Start()
     {
+        _isReloading = false;
+        CanFire = true;
+        _bullets = 30;
         line = GetComponent<LineRenderer>();
         impactSpawner = GetComponent<ImpactManager>();
     }
@@ -34,20 +37,23 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LaserProjection();
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && CanFire)
+        if (!Player._dead)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot(transform.position, transform.forward);
-            _audio.PlayShoot();
-            _bullets--;
-            InGameUI.SendBullets(_bullets);
+            LaserProjection();
+            if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && CanFire)
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                Shoot(transform.position, transform.forward);
+                _audio.PlayShoot();
+                _bullets--;
+                InGameUI.SendBullets(_bullets);
+            }
+            if (_bullets <= 0)
+            {
+                CanFire = false;
+            }
+            StartReloading();
         }
-        if (_bullets <= 0)
-        {
-            CanFire = false;
-        }
-        StartReloading();
         //SecondHit();
     }
     void StartReloading()
