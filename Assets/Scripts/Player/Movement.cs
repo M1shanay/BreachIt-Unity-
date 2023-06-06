@@ -281,7 +281,7 @@ public class Movement : MonoBehaviour
 
     IEnumerator PCMovement()
     {
-        while (!Player._dead)
+        while (!Player._dead && !InGameUI._won)
         {
             Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
             if (!Kicked)
@@ -298,7 +298,7 @@ public class Movement : MonoBehaviour
 
     IEnumerator MobileMovement()
     {
-        while (!Player._dead)
+        while (!Player._dead && !InGameUI._won)
         {
             Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
             if (!Kicked)

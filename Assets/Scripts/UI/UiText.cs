@@ -14,6 +14,7 @@ public class UiText : MonoBehaviour
     public TMP_Text Bullets;
 
     public GameObject DeadScreen;
+    public TMP_Text DeadText;
     public GameObject PainHUD;
     private Color32 _painColor;
     private byte _pain = 0;
@@ -37,13 +38,21 @@ public class UiText : MonoBehaviour
 
     private void PlayerDead()
     {
+        DeadText.text = "You are dead";
+        DeadScreen.SetActive(true);
+    }
+    private void PlayerWin()
+    {
+        InGameUI._won = true;
+        DeadText.text = "Mission complete";
         DeadScreen.SetActive(true);
     }
     private void CheckLevelOver()
     {
         if(RemainingHostages == 0 && RemainingKills == 0)
         {
-            SceneManager.LoadScene("Menu");
+
+            PlayerWin();
         }
     }
     private void EnemyKilled()

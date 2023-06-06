@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public static bool _dead = false;
     private void Start()
     {
+        InGameUI._won = false;
         _dead = false;
         _health = _maxHealth;
     }

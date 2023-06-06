@@ -12,6 +12,9 @@ public class InGameUI : MonoBehaviour
     public static UnityEvent OnTakeMedicine = new UnityEvent();
     public static UnityEvent OnPlayerDead = new UnityEvent();
 
+    public static bool _won;
+
+
     public static void SendHostageSave()
     {
         OnHostageSave.Invoke();

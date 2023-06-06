@@ -17,17 +17,15 @@ public class MainMenu : MonoBehaviour
     {
         CameraAnimation.SetBool("Right", true);
         CameraAnimation.SetBool("Start", true);
-        Debug.Log("Start");
     }
     public void ExitButton()
     {
-        Debug.Log("Exit");
+        Application.Quit();
     }
     public void TutorButton()
     {
         CameraAnimation.SetBool("Left", true);
         CameraAnimation.SetBool("Tutorial", true);
-        Debug.Log("Tutorial");
     }
     public void BackFromStart()
     {
