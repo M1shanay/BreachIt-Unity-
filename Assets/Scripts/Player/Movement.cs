@@ -265,7 +265,7 @@ public class Movement : MonoBehaviour
                 {
                     value = 1;
                 }
-                Debug.Log(distance);
+                //Debug.Log(distance);
                 animator.SetFloat("Dist", value, 0.05f, Time.deltaTime);
             }
         }

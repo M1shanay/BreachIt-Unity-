@@ -300,7 +300,7 @@ NavMeshAgent:
   m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 10
+  m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02e8d2ac7b91a44a97cbc79afae883f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetMove: {fileID: 0}
   _target: {fileID: 0}
   _bullet: {fileID: 8909897061118547732, guid: 3739ab2c8cb0d8347bd44c4caa453615, type: 3}
   _fireRate: 1.2
@@ -329,14 +330,16 @@ MonoBehaviour:
   _offset: {x: 0, y: 2.1, z: 0}
   _bulletOffset: {x: 0, y: 2.1, z: 0}
   _shotPoint: {fileID: 8734671285655281247}
+  _visionPoint: {fileID: 0}
   _targetChasingOffset: 2
-  _spottedDistance: 12
-  _shootingDistance: 10
+  _spottedDistance: 10
+  _shootingDistance: 8
   _health: 30
   _animation: {fileID: 1657989299692134406}
   _audio: {fileID: 5289205059681730938}
   _indicator: {fileID: 5573809087180316983}
   _isEnemySpotted: 0
+  _isChasing: 0
 --- !u!114 &5573809087180316983
 MonoBehaviour:
   m_ObjectHideFlags: 0

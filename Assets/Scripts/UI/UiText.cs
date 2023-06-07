@@ -19,13 +19,6 @@ public class UiText : MonoBehaviour
     private Color32 _painColor;
     private byte _pain = 0;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene("Menu");
-        }
-    }
     private void Awake()
     {
         InGameUI.OnEnemyKilled.AddListener(EnemyKilled);
@@ -36,17 +29,33 @@ public class UiText : MonoBehaviour
         InGameUI.OnPlayerDead.AddListener(PlayerDead);
     }
 
+    private void Start()
+    {
+        HostagesText.text = RemainingHostages.ToString();
+        KillsText.text = RemainingKills.ToString();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Menu");
+        }
+    }
+    
     private void PlayerDead()
     {
         DeadText.text = "You are dead";
         DeadScreen.SetActive(true);
     }
+
     private void PlayerWin()
     {
         InGameUI._won = true;
         DeadText.text = "Mission complete";
         DeadScreen.SetActive(true);
     }
+
     private void CheckLevelOver()
     {
         if(RemainingHostages == 0 && RemainingKills == 0)
@@ -55,28 +64,33 @@ public class UiText : MonoBehaviour
             PlayerWin();
         }
     }
+
     private void EnemyKilled()
     {
         RemainingKills--;
         KillsText.text = RemainingKills.ToString();
         CheckLevelOver();
     }
+
     private void HostageSave()
     {
         RemainingHostages--;
         HostagesText.text = RemainingHostages + "";
         CheckLevelOver();
     }
+
     private void BulletShot(int bullets)
     {
         Bullets.text = bullets + "/30";
     }
+
     private void GetPain()
     {
         _pain += 63;
         _painColor = new Color32(255,255,255,_pain);
         PainHUD.GetComponent<SpriteRenderer>().color = _painColor;
     }
+
     private void GetHeal()
     {
         _pain = 0;
