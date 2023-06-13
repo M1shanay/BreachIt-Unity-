@@ -5,19 +5,16 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-
     [SerializeField] private Animator animator;
     [SerializeField] private FixedJoystick _movementJoystick;
     [SerializeField] private FixedJoystick _rotationJoystick;
     [SerializeField] private float _rotationSpeed;
-
-
+    [SerializeField] private GameObject _canvas;
   
     private CharacterController _controller;
     public GameObject FirePref;
     public Transform ShootPoint;
     private int Clin = 0;
-    //public Camera MainCamera;
     public float gravity;
     public float jumpForce;
     public float speed;
@@ -27,10 +24,20 @@ public class Movement : MonoBehaviour
     public bool Kicked;
     public Texture2D cursorTexture;
 
-    private bool _isMobile = false;
+    private bool _isMobile = true;
 
     private void Awake()
     {
+        _isMobile = Application.isMobilePlatform;
+        if(_isMobile)
+        {
+            _canvas.SetActive(true);
+        }
+        else
+        {
+            _canvas.SetActive(false);
+        }
+
         FirePref.SetActive(false);
         animator.SetFloat("Shoot", 0, 0.05f, Time.deltaTime);
     }
@@ -38,6 +45,7 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
+
         if(!_isMobile)
         {
             StartCoroutine("PCMovement");
@@ -46,19 +54,6 @@ public class Movement : MonoBehaviour
         {
             StartCoroutine("MobileMovement");
         }
-    }
-
-    private void Update()
-    {
-        /*Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-        if (!Kicked)
-        {
-            PCMove();
-        }
-        CloseToWallAnimation();
-        PCShootAnimation();
-        //Rotation();
-        LookOnCursor();*/
     }
 
     //PCMovement-----------------------------------------
@@ -174,33 +169,6 @@ public class Movement : MonoBehaviour
 
             animator.SetFloat("VelocityZ", velZ, 0.1f, Time.deltaTime);
             animator.SetFloat("VelocityX", velX, 0.1f, Time.deltaTime);
-
-            if (Input.GetKey(KeyCode.Q))
-            {
-                animator.SetFloat("Clin", -1f, 0.2f, Time.deltaTime);
-                Clin = 1;
-            }
-            else if (Clin==1)
-            {
-                //Debug.Log("��� ����");
-                animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.E))
-            {
-                Clin = -1;
-                animator.SetFloat("Clin", 1f, 0.2f, Time.deltaTime);
-            }
-            else if (Clin==-1)
-            {
-                //Debug.Log("��� ����");
-                animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
-            }
-            if (animator.GetFloat("Clin") <= 0.001f && animator.GetFloat("Clin") >= -0.001f && Clin!=0)
-            {
-                //Debug.Log("���");
-                Clin = 0;
-            }
-
         }
         else
         {
@@ -209,6 +177,54 @@ public class Movement : MonoBehaviour
         _jumpSpeed += gravity * Time.deltaTime;
         Vector3 direction = new Vector3(horizontal * speed * Time.deltaTime, _jumpSpeed * Time.deltaTime, vertical * speed * Time.deltaTime);
         _controller.Move(direction);
+    }
+
+    public void LeftClinAnimationMobile()
+    {
+        if (Clin == -1)
+        {
+            StartCoroutine(RightToZeroClinAnim());
+        }
+        else if (animator.GetFloat("Clin") <= 0.001f)
+        {
+            StopCoroutine(RightToZeroClinAnim());
+            animator.SetFloat("Clin", -1f, 0.2f, Time.deltaTime);
+            Clin = 1;
+        }
+    }
+
+    private IEnumerator RightToZeroClinAnim()
+    {
+        while (animator.GetFloat("Clin") >= 0.001f)
+        {
+            animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
+            yield return new WaitForFixedUpdate();
+        }
+        Clin = 0;
+    }
+
+    public void RightClinAnimationMobile()
+    {
+        if (Clin == 1)
+        {
+            StartCoroutine(LeftToZeroClinAnim());
+        }
+        else if (animator.GetFloat("Clin") >= -0.001f)
+        {
+            StopCoroutine(LeftToZeroClinAnim());
+            animator.SetFloat("Clin", 1f, 0.2f, Time.deltaTime);
+            Clin = -1;
+        }
+    }
+
+    private IEnumerator LeftToZeroClinAnim()
+    {
+        while (animator.GetFloat("Clin") <= -0.001f)
+        {
+            animator.SetFloat("Clin", 0, 0.2f, Time.deltaTime);
+            yield return new WaitForFixedUpdate();
+        }
+        Clin = 0;
     }
 
     public void MobileShootAnimation(int setting)
@@ -258,14 +274,12 @@ public class Movement : MonoBehaviour
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Map")) 
             {
-                //Debug.Log("�����");
                 float distance = Vector3.Distance(hit.point, ShootPoint.position);
                 float value = 0.65f/distance;
                 if(value > 0.95)
                 {
                     value = 1;
                 }
-                //Debug.Log(distance);
                 animator.SetFloat("Dist", value, 0.05f, Time.deltaTime);
             }
         }
@@ -307,9 +321,13 @@ public class Movement : MonoBehaviour
             }
             CloseToWallAnimation();
             Rotation();
-            LookOnCursor();
 
             yield return null;
         }
+    }
+
+    public bool GetIsMobile
+    {
+        get { return _isMobile; }
     }
 }

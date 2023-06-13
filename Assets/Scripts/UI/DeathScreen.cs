@@ -7,10 +7,12 @@ public class DeathScreen : MonoBehaviour
 {
     public void ExitToMenu()
     {
+        YandexSDK.YaSDK.instance.ShowInterstitial();
         SceneManager.LoadScene("Menu");
     }
     public void Retry()
     {
+        YandexSDK.YaSDK.instance.ShowInterstitial();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

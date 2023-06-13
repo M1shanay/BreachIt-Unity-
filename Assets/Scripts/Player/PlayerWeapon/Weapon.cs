@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private PlayerAudio _audio;
     [SerializeField] private Animator _animator;
+    [SerializeField] private Movement _playerMovement;
 
     private LineRenderer line;
     public Transform laserposition;
@@ -37,9 +38,10 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!Player._dead)
+        LaserProjection();
+
+        if (!Player._dead && !InGameUI._won && !_playerMovement.GetIsMobile)
         {
-            LaserProjection();
             if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && CanFire)
             {
                 nextTimeToFire = Time.time + 1f / fireRate;
@@ -56,7 +58,35 @@ public class Weapon : MonoBehaviour
         }
         //SecondHit();
     }
-    void StartReloading()
+
+    public IEnumerator MobileShooting()
+    {
+        while (true)
+        {
+            if (!Player._dead && !InGameUI._won)
+            {
+                if (Time.time >= nextTimeToFire && CanFire)
+                {
+                    _playerMovement.MobileShootAnimation(1);
+                    nextTimeToFire = Time.time + 1f / fireRate;
+                    Shoot(transform.position, transform.forward);
+                    _audio.PlayShoot();
+                    _bullets--;
+                    InGameUI.SendBullets(_bullets);
+                }
+                if (_bullets <= 0)
+                {
+                    _playerMovement.MobileShootAnimation(2);
+                    CanFire = false;
+                }
+                StartReloading();
+            }
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    public void StartReloading()
     {
         if (Input.GetKeyDown(KeyCode.R) && !_isReloading)
         {
@@ -67,6 +97,19 @@ public class Weapon : MonoBehaviour
             StartCoroutine(Reloading());
         }
     }
+
+    public void StartReloadingMobile()
+    {
+        if (!_isReloading)
+        {
+            CanFire = false;
+            _isReloading = true;
+            _audio.PlayReload();
+            _animator.Play("Reloading");
+            StartCoroutine(Reloading());
+        }
+    }
+
     public IEnumerator Reloading()
     {
         yield return new WaitForSeconds(4f);
@@ -75,6 +118,7 @@ public class Weapon : MonoBehaviour
         CanFire = true;
         _isReloading = false;
     }
+
     void LaserProjection()
     {
         line.SetPosition(0, laserposition.position);
@@ -92,6 +136,7 @@ public class Weapon : MonoBehaviour
             line.SetPosition(1, transform.forward * 5000);
         }
     }
+
     void Shoot(Vector3 position, Vector3 forward)
     {
         Ray ray = new Ray(position, forward);
@@ -122,7 +167,6 @@ public class Weapon : MonoBehaviour
                             Ray wallbang = new Ray(penetrationHit.point + ray.direction, ray.direction);
                             RaycastHit wallbangHit;
                             
-                           
                             float wallbangDist = penetrationDistans/Vector3.Distance(transform.position, penetrationHit.point);
 
                             Debug.DrawRay(penetrationHit.point, ray.direction * wallbangDist, Color.red);
@@ -142,6 +186,7 @@ public class Weapon : MonoBehaviour
             }
         }
     }
+
     //void ImpactManager(RaycastHit hit, int Revers)
     //{
     //    //if (Input.GetMouseButton(0))
@@ -185,6 +230,11 @@ public class Weapon : MonoBehaviour
             SoldierKnife soldierKnife = target.transform.GetComponent<SoldierKnife>();
             soldierKnife.ApllyDamage(damage);
         }
+    }
+
+    public int GetBulletCount
+    {
+        get { return _bullets; }
     }
 
     //void ImpactManager(RaycastHit hit,int Revers)
